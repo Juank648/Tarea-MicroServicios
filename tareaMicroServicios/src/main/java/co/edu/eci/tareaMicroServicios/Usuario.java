@@ -17,7 +17,7 @@ public class Usuario {
         this.email = email;
         this.lastName = lastName;
         this.createdAt = new Date();
-        //this.passwordHash = BCrypt.hashpw( passwordHash, BCrypt.gensalt() );
+        this.passwordHash = BCrypt.hashpw( passwordHash, BCrypt.gensalt() );
     }
 
     public String getId() {
