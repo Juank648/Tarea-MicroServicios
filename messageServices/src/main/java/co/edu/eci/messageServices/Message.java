@@ -1,25 +1,29 @@
-package co.edu.eci.tareaMicroServicios;
+package co.edu.eci.messageServices;
 
 import java.util.Date;
 import java.util.UUID;
 
-public class Mensaje {
+public class Message {
     public String id;
     public String descripcion;
     public Date fecha;
-    public Usuario usuario;
+    public String usuario;
 
-    public Mensaje(String descripcion, Usuario usuario) {
+    public Message(String descripcion, String usuario) {
         this.id = UUID.randomUUID().toString();
         this.descripcion = descripcion;
         this.usuario = usuario;
         this.fecha = new Date();
     }
 
-    public Mensaje(String descripcion) {
+    public Message(String descripcion) {
+        this.id = UUID.randomUUID().toString();
         this.descripcion = descripcion;
         this.fecha = new Date();
     }
+    public Message() {
+    }
+
 
     public String getDescripcion() {
         return descripcion;
@@ -37,11 +41,19 @@ public class Mensaje {
         this.fecha = new Date();
     }
 
-    public Usuario getUsuario() {
+    public String getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(String usuario) {
         this.usuario = usuario;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId() {
+        this.id = UUID.randomUUID().toString();
     }
 }

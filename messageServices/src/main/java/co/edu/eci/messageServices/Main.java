@@ -1,41 +1,46 @@
-package co.edu.eci.tareaMicroServicios;
+package co.edu.eci.messageServices;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.google.gson.*;
+import okhttp3.RequestBody;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 
 import static spark.Spark.*;
 
-public class TareaMain {
-
-    private static Hilo hilo = new Hilo();
+public class Main {
 
     public static void main(String[] args) {
-        Mensaje prueba = new Mensaje("Prueba 1");
-        Mensaje prueba2 = new Mensaje("Prueba 2");
-        hilo.addMensaje(prueba);
-        hilo.addMensaje(prueba2);
+        Message message = new Message();
+        System.out.println("Hola Mundo desde Message");
         Gson gson = new Gson();
-        System.out.println("Hello World");
         port(getPort());
-        get("/stream", (req, res) -> gson.toJson(hilo.getMensajes()));
+        get("/message", (req, res) -> gson.toJson(message));
         post("/message", (request, response)
                 -> {
             if (request.body() != null) {//existe contenido
                 try {
+                    System.out.println("//////////////");
+                    System.out.println(request.body());
                     //Obtiene objeto JSON de tipo mensaje
-                    Mensaje mensaje = gson.fromJson(request.body(), Mensaje.class);
+                    
+                    Message mensaje = new Message("fhdfb");
+
                     if(mensaje.getDescripcion().length() > 140){
                         response.status(400);//Bad Request
                         response.body("Longitud no permitida");
                         System.out.println("Longitud no permitida");
                         return response;
                     }else{
-                        mensaje.setFecha();
-                        hilo.addMensaje(mensaje);
+                        message.setDescripcion(mensaje.getDescripcion());
+                        message.setId();
+                        message.setFecha();
                         response.status(201);//Codigo de respuesta
-                        return gson.toJson(hilo.getMensajes());
+                        return gson.toJson(message);
                     }
                 } catch (JsonParseException ex) {
+                    System.out.println("*******************");
                     response.status(400);//Bad Request
                     response.body("No se logro hacer el post");
                     return response;
@@ -48,9 +53,8 @@ public class TareaMain {
             }
 
         }, gson::toJson);
+
     }
-
-
     static int getPort() {
         if (System.getenv("PORT") != null) {
             return Integer.parseInt(System.getenv("PORT"));
